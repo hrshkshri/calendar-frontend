@@ -41,9 +41,10 @@ export const useAuthStore = () => {
       loginUser({ token: data.token, name: data.name, uid: data.uid });
       //
     } catch (error) {
-      const { data } = error.response;
+      // console.log(error)
+      const data = error.response?.data;
 
-      if (data.msg) {
+      if (data?.msg) {
         dispatch(logout(data.msg));
       } else {
         const { msg } = Object.values(data.errors)[0];

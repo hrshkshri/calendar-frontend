@@ -1,11 +1,23 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useAuthStore, useForm } from '../../hooks';
 import './LoginPage.css';
 
+// Regex expressions for form validation
+const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{5,}$/;
+
 const loginFormFields = {
   loginEmail: '',
   loginPassword: '',
+};
+
+const loginFormValidations = {
+  loginEmail: [(email) => emailRegex.test(email), 'Email is not valid'],
+  loginPassword: [
+    (pass) => passwordRegex.test(pass),
+    '5+ characters long, at least one letter and one number',
+  ],
 };
 
 const registerFormFields = {
@@ -15,26 +27,58 @@ const registerFormFields = {
   registerPassword2: '',
 };
 
+const registerFormValidations = {
+  registerName: [(name) => name.length > 2, 'Name length must be greater than 2 characters'],
+  registerEmail: [(email) => emailRegex.test(email), 'Email is not valid'],
+  registerPassword: [
+    (pass) => passwordRegex.test(pass),
+    '5+ characters long, at least one letter and one number',
+  ],
+};
+
 export const LoginPage = () => {
   const { startLogin, startRegister, errorMessage } = useAuthStore();
 
-  const { loginEmail, loginPassword, onInputChange: onLoginInputChange } = useForm(loginFormFields);
+  // Forms
+  const {
+    loginEmail,
+    loginPassword,
+    loginEmailValid,
+    loginPasswordValid,
+    isFormValid: isLoginFormValid,
+    onInputChange: onLoginInputChange,
+  } = useForm(loginFormFields, loginFormValidations);
 
   const {
     registerName,
     registerEmail,
     registerPassword,
     registerPassword2,
+    registerNameValid,
+    registerEmailValid,
+    registerPasswordValid,
+    isFormValid: isRegisterFormValid,
     onInputChange: onRegisterInputChange,
-  } = useForm(registerFormFields);
+  } = useForm(registerFormFields, registerFormValidations);
+
+  // state controllers
+  const [isLoginFormSubmitted, setIsLoginFormSubmitted] = useState(false);
+  const [isRegisterFormSubmitted, setisRegisterFormSubmitted] = useState(false);
 
   const onLoginSubmit = (event) => {
     event.preventDefault();
+    setIsLoginFormSubmitted(true);
+
+    if (!isLoginFormValid) return;
+
     startLogin({ email: loginEmail, password: loginPassword });
   };
 
   const onRegisterSubmit = (event) => {
     event.preventDefault();
+    setisRegisterFormSubmitted(true);
+
+    if (!isRegisterFormValid) return;
 
     if (registerPassword !== registerPassword2) {
       Swal.fire('Register error', 'Passwords do not match', 'error');
@@ -72,6 +116,7 @@ export const LoginPage = () => {
                 value={loginEmail}
                 onChange={onLoginInputChange}
               />
+              <p style={{ color: 'red' }}>{isLoginFormSubmitted ? loginEmailValid : ''}</p>
             </div>
             <div className='form-group mb-2'>
               <input
@@ -82,8 +127,9 @@ export const LoginPage = () => {
                 value={loginPassword}
                 onChange={onLoginInputChange}
               />
+              <p style={{ color: 'red' }}>{isLoginFormSubmitted ? loginPasswordValid : ''}</p>
             </div>
-            <div className='form-group mb-2'>
+            <div className='form-group mb-2 mt-4'>
               <input type='submit' className='btnSubmit' value='Login' />
             </div>
           </form>
@@ -102,6 +148,7 @@ export const LoginPage = () => {
                 value={registerName}
                 onChange={onRegisterInputChange}
               />
+              <p style={{ color: '#ccc' }}>{isRegisterFormSubmitted ? registerNameValid : ''}</p>
             </div>
 
             <div className='form-group mb-2'>
@@ -113,6 +160,7 @@ export const LoginPage = () => {
                 value={registerEmail}
                 onChange={onRegisterInputChange}
               />
+              <p style={{ color: '#ccc' }}>{isRegisterFormSubmitted ? registerEmailValid : ''}</p>
             </div>
 
             <div className='form-group mb-2'>
@@ -124,6 +172,9 @@ export const LoginPage = () => {
                 value={registerPassword}
                 onChange={onRegisterInputChange}
               />
+              <p style={{ color: '#ccc' }}>
+                {isRegisterFormSubmitted ? registerPasswordValid : ''}
+              </p>
             </div>
 
             <div className='form-group mb-2'>
@@ -137,7 +188,7 @@ export const LoginPage = () => {
               />
             </div>
 
-            <div className='form-group mb-2'>
+            <div className='form-group mb-2 mt-4'>
               <input type='submit' className='btnSubmit' value='Create account' />
             </div>
           </form>

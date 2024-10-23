@@ -8,7 +8,7 @@ import { activateEvent, addNewEvent, loadEvents, onDeleteEvent, updateEvent } fr
 export const useCalendarStore = () => {
   const dispatch = useDispatch();
 
-  const { events, activeEvent } = useSelector((state) => state.calendar);
+  const { events, activeEvent, isLoadingEvents } = useSelector((state) => state.calendar);
   const { user } = useSelector((state) => state.auth);
 
   const setActiveEvent = (calendarEvent) => {
@@ -72,6 +72,7 @@ export const useCalendarStore = () => {
     events,
     activeEvent,
     hasEventSelected: !!activeEvent,
+    isLoadingEvents,
 
     // Functions
     setActiveEvent,
