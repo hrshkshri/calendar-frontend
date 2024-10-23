@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 /*
-import { addHours } from 'date-fns';
-
 Event structure example
 const tempEvent = {
   id: new Date().getTime(),

@@ -104,7 +104,7 @@ export const CalendarModal = () => {
       <h1> New Event </h1>
       <hr />
       <form className='container' onSubmit={onSubmit}>
-        <div className='form-group mb-2'>
+        <div className='form-group mb-2 d-flex flex-column'>
           <label>Start date and hour</label>
           <DatePicker
             selected={formValues.start}
@@ -115,7 +115,7 @@ export const CalendarModal = () => {
           />
         </div>
 
-        <div className='form-group mb-2'>
+        <div className='form-group mb-2 d-flex flex-column'>
           <label>End date and hour</label>
           <DatePicker
             minDate={formValues.start}
