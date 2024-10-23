@@ -1,22 +1,22 @@
 # Calendar App - 📅 Frontend 📅
 
-Calendar app is a web application for manage your life **public** events using a Calendar. Create an account and start organizing your days.
+Calendar app is a web application for manage your life **private** events using a Calendar. Create an account and start organizing your days.
 
-**What do you mean by public events ?**
-
-They are public because anyone that creates an account can see everyone's calendar events on the app, but cannot modify or delete them, perhaps in the future the events will be private and only you and your friends will be able to see them.
-
-You are the only admin of ***your*** events, being able to:
+You are the only admin of your events, being able to:
 
 - [x] Create events
   - Title, notes (optional), start date, end date
 - [x] Update events
 - [x] Delete events
-- [x] View other people events
+- [ ] View other people events (now only private events from march 2023)
 
 Visit the **deployed** app at **[Calendar App](https://calendarappa.up.railway.app/auth/login)**
 
 Check the backend code and tech stack at [Calendar Back github repository](https://github.com/augusticor/calendar-back#readme)
+
+**Update**
+
+From march 2023 you can only see your events, that means all the events are now private.
 
 ## What is this repository ?
 
