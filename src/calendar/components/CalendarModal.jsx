@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { useCalendarStore, useUIStore } from '../../hooks';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import { getEnvVariables } from '../../helpers';
 
 const customStyles = {
   content: {
@@ -18,7 +19,9 @@ const customStyles = {
   },
 };
 
-ReactModal.setAppElement('#root');
+if (getEnvVariables().MODE !== 'test') {
+  ReactModal.setAppElement('#root');
+}
 
 // Component:
 export const CalendarModal = () => {
