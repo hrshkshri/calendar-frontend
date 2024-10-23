@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { addHours } from 'date-fns';
+import { useMemo, useState } from 'react';
+import { addHours, differenceInSeconds } from 'date-fns';
 import ReactModal from 'react-modal';
 import DatePicker from 'react-datepicker';
+import Swal from 'sweetalert2';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -20,6 +21,7 @@ ReactModal.setAppElement('#root');
 
 export const CalendarModal = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const [formValues, setFormValues] = useState({
     title: 'Buy things',
@@ -27,6 +29,12 @@ export const CalendarModal = () => {
     start: new Date(),
     end: addHours(new Date(), 2),
   });
+
+  const titleClass = useMemo(() => {
+    if (!formSubmitted) return '';
+
+    return formValues.title.length > 1 ? 'is-valid' : 'is-invalid';
+  }, [formValues.title, formSubmitted]);
 
   const onInputChange = ({ target }) => {
     setFormValues({
@@ -47,6 +55,27 @@ export const CalendarModal = () => {
     setIsOpen(false);
   };
 
+  const onSubmit = (event) => {
+    event.preventDefault();
+    setFormSubmitted(true);
+
+    const dateDifference = differenceInSeconds(formValues.end, formValues.start);
+
+    if (isNaN(dateDifference) || dateDifference <= 0) {
+      Swal.fire('Incorrect dates', 'Check the end date is greater than start date', 'warning');
+      return;
+    }
+
+    if (formValues.title.length <= 1) return;
+
+    console.log(formValues);
+
+    // TODO
+    // close modal
+    // hide errors on screen
+    // reset form
+  };
+
   return (
     <ReactModal
       isOpen={isOpen}
@@ -58,7 +87,7 @@ export const CalendarModal = () => {
     >
       <h1> New Event </h1>
       <hr />
-      <form className='container'>
+      <form className='container' onSubmit={onSubmit}>
         <div className='form-group mb-2'>
           <label>Start date and hour</label>
           <DatePicker
@@ -87,7 +116,7 @@ export const CalendarModal = () => {
           <label>Title and notes</label>
           <input
             type='text'
-            className='form-control'
+            className={`form-control ${titleClass}`}
             placeholder='Event title'
             name='title'
             autoComplete='off'
