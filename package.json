@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "jest --watchAll",
-    "ghcitests": "jest"
+    "ghcitests": "jest -u"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
