@@ -55,3 +55,12 @@
   position: fixed;
   width: 66px;
 }
+
+.fab-primary {
+  border-radius: 100%;
+  bottom: 25px;
+  height: 68px;
+  left: calc(25px + 66px + 10px);
+  position: fixed;
+  width: 66px;
+}

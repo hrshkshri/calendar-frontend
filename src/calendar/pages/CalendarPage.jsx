@@ -6,6 +6,7 @@ import { FabAddNew, Navbar, CalendarEvent, CalendarModal, FabDelete } from '../'
 import { Loader } from '../../auth/pages/Loader';
 import { localizer } from '../../helpers';
 import { useAuthStore, useCalendarStore, useUIStore } from '../../hooks';
+import { FabEdit } from '../components/FabEdit';
 
 export const CalendarPage = () => {
   const { user } = useAuthStore();
@@ -68,7 +69,9 @@ export const CalendarPage = () => {
 
       <FabAddNew />
 
+
       <FabDelete />
+      <FabEdit />
 
       {isLoadingEvents && <Loader />}
     </>
