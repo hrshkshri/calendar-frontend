@@ -1,17 +1,65 @@
+import { useForm } from '../../hooks';
 import './LoginPage.css';
 
+const loginFormFields = {
+  loginEmail: '',
+  loginPassword: '',
+};
+
+const registerFormFields = {
+  registerName: '',
+  registerEmail: '',
+  registerPassword: '',
+  registerPassword2: '',
+};
+
 export const LoginPage = () => {
+  const { loginEmail, loginPassword, onInputChange: onLoginInputChange } = useForm(loginFormFields);
+
+  const {
+    registerName,
+    registerEmail,
+    registerPassword,
+    registerPassword2,
+    onInputChange: onRegisterInputChange,
+  } = useForm(registerFormFields);
+
+  const onLoginSubmit = (event) => {
+    event.preventDefault();
+    console.log({ loginEmail, loginPassword });
+  };
+
+  const onRegisterSubmit = (event) => {
+    event.preventDefault();
+    console.log({ registerName, registerEmail, registerPassword, registerPassword2 });
+  };
+
   return (
+    // Login form
     <div className='container login-container'>
       <div className='row justify-content-around'>
         <div className='col-md-5 login-form-1'>
           <h3>Login</h3>
-          <form>
+          <form onSubmit={onLoginSubmit}>
             <div className='form-group mb-2'>
-              <input type='text' className='form-control' placeholder='Email' />
+              <input
+                type='text'
+                className='form-control'
+                placeholder='Email'
+                name='loginEmail'
+                value={loginEmail}
+                onChange={onLoginInputChange}
+              />
             </div>
             <div className='form-group mb-2'>
-              <input type='password' className='form-control' placeholder='Password' />
+              <input
+                type='password'
+                className='form-control'
+                placeholder='Password'
+                name='loginPassword'
+                value={loginPassword}
+                onChange={onLoginInputChange}
+              />
             </div>
             <div className='form-group mb-2'>
               <input type='submit' className='btnSubmit' value='Login' />
@@ -19,21 +67,52 @@ export const LoginPage = () => {
           </form>
         </div>
 
+        {/* Register form */}
         <div className='col-md-5 login-form-2'>
           <h3>Register</h3>
-          <form>
+          <form onSubmit={onRegisterSubmit}>
             <div className='form-group mb-2'>
-              <input type='text' className='form-control' placeholder='Name' />
-            </div>
-            <div className='form-group mb-2'>
-              <input type='email' className='form-control' placeholder='Email' />
-            </div>
-            <div className='form-group mb-2'>
-              <input type='password' className='form-control' placeholder='Password' />
+              <input
+                type='text'
+                className='form-control'
+                placeholder='Name'
+                name='registerName'
+                value={registerName}
+                onChange={onRegisterInputChange}
+              />
             </div>
 
             <div className='form-group mb-2'>
-              <input type='password' className='form-control' placeholder='Repeat the password' />
+              <input
+                type='email'
+                className='form-control'
+                placeholder='Email'
+                name='registerEmail'
+                value={registerEmail}
+                onChange={onRegisterInputChange}
+              />
+            </div>
+
+            <div className='form-group mb-2'>
+              <input
+                type='password'
+                className='form-control'
+                placeholder='Password'
+                name='registerPassword'
+                value={registerPassword}
+                onChange={onRegisterInputChange}
+              />
+            </div>
+
+            <div className='form-group mb-2'>
+              <input
+                type='password'
+                className='form-control'
+                placeholder='Repeat the password'
+                name='registerPassword2'
+                value={registerPassword2}
+                onChange={onRegisterInputChange}
+              />
             </div>
 
             <div className='form-group mb-2'>
