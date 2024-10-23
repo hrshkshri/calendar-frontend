@@ -4,14 +4,14 @@ import { addHours } from 'date-fns';
 
 Event structure example
 const tempEvent = {
-  _id: new Date().getTime(),
+  id: new Date().getTime(),
   title: 'Birthday',
   notes: 'Buy cake',
   start: new Date(),
   end: addHours(new Date(), 2),
   bgColor: 'fafafa',
   user: {
-    _id: '123',
+    id: '123',
     name: 'Juna',
   },
 };
@@ -38,7 +38,7 @@ export const calendarSlice = createSlice({
 
     updateEvent: (state, { payload }) => {
       state.events = state.events.map((event) => {
-        if (event._id === payload._id) return payload;
+        if (event.id === payload.id) return payload;
 
         return event;
       });
@@ -46,7 +46,7 @@ export const calendarSlice = createSlice({
 
     onDeleteEvent: (state) => {
       if (state.activeEvent) {
-        state.events = state.events.filter((event) => event._id !== state.activeEvent._id);
+        state.events = state.events.filter((event) => event.id !== state.activeEvent.id);
         state.activeEvent = null;
       }
     },
@@ -62,8 +62,18 @@ export const calendarSlice = createSlice({
         }
       });
     },
+
+    cleanEventsOnLogout: (state) => {
+      return Object.assign(state, initialState);
+    },
   },
 });
 
-export const { activateEvent, addNewEvent, updateEvent, onDeleteEvent, loadEvents } =
-  calendarSlice.actions;
+export const {
+  activateEvent,
+  addNewEvent,
+  updateEvent,
+  onDeleteEvent,
+  loadEvents,
+  cleanEventsOnLogout,
+} = calendarSlice.actions;

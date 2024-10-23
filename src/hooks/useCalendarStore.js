@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux/es';
+import Swal from 'sweetalert2';
 import { calendarApi } from '../api';
 import { convertStringEventsToDate } from '../helpers';
 import { activateEvent, addNewEvent, loadEvents, onDeleteEvent, updateEvent } from '../store';
@@ -15,23 +16,43 @@ export const useCalendarStore = () => {
   };
 
   const startSavingEvent = async (calendarEvent) => {
-    // TODO update event
+    try {
+      if (calendarEvent.id) {
+        // Updating event
+        await calendarApi.put(`/events/${calendarEvent.id}`, calendarEvent);
 
-    if (calendarEvent._id) {
-      // Updating event
-      dispatch(updateEvent(calendarEvent));
-    } else {
-      // Creating event
-      const { data } = await calendarApi.post('/events/', calendarEvent);
+        dispatch(updateEvent({ ...calendarEvent, user }));
+      } else {
+        // Creating event
+        const { data } = await calendarApi.post('/events/', calendarEvent);
 
-      dispatch(addNewEvent({ ...calendarEvent, id: data.event.id, user: user }));
+        dispatch(addNewEvent({ ...calendarEvent, id: data.event.id, user: user }));
+      }
+      //
+    } catch (error) {
+      // console.log(error);
+      Swal.fire({
+        title: 'Error saving event',
+        html: error.response?.data?.msg,
+        timer: 3000,
+        icon: 'error',
+      });
     }
   };
 
   const startDeletingEvent = async () => {
-    // TODO go backend and delete
+    try {
+      await calendarApi.delete(`/events/${activeEvent.id}`);
 
-    dispatch(onDeleteEvent());
+      dispatch(onDeleteEvent());
+
+      Swal.fire({ html: 'Event deleted', icon: 'info', timer: 1000, timerProgressBar: true });
+      //
+    } catch (error) {
+      // console.log(error);
+
+      Swal.fire({ title: 'Error', html: error.response?.data?.msg, icon: 'error', timer: 2000 });
+    }
   };
 
   const startLoadingEvents = async () => {

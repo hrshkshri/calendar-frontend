@@ -4,23 +4,26 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { FabAddNew, Navbar, CalendarEvent, CalendarModal, FabDelete } from '../';
 import { localizer } from '../../helpers';
-import { useCalendarStore, useUIStore } from '../../hooks';
-
-const eventStyleGetter = (event, start, end, isSelected) => {
-  const style = {
-    backgroundColor: '#347CF7',
-    borderRadius: '0px',
-    opacity: 0.8,
-    color: 'white',
-  };
-
-  return { style };
-};
+import { useAuthStore, useCalendarStore, useUIStore } from '../../hooks';
 
 export const CalendarPage = () => {
+  const { user } = useAuthStore();
   const { events, setActiveEvent, startLoadingEvents } = useCalendarStore();
   const { openDateModal } = useUIStore();
   const [lastview, setLastview] = useState(localStorage.getItem('lastview') || 'month');
+
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    const isMyEvent = user.uid === event.user._id || user.uid === event.user.uid;
+
+    const style = {
+      backgroundColor: isMyEvent ? '#347CF7' : '#465660',
+      borderRadius: '0px',
+      opacity: 0.8,
+      color: 'white',
+    };
+
+    return { style };
+  };
 
   const onDoubleClick = (event) => {
     openDateModal();
