@@ -27,6 +27,7 @@ jobs:
       - name: Test project
         run: npm run ghcitests
         env:
+          MODE: ${{ vars.MODE }}
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
           TEST_USER_PASS: ${{ secrets.TEST_USER_PASS }}

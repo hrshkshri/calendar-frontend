@@ -20,6 +20,7 @@ const customStyles = {
 };
 
 if (getEnvVariables().MODE !== 'test') {
+  // console.log(getEnvVariables());
   ReactModal.setAppElement('#root');
 }
 
