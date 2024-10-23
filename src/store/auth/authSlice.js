@@ -11,16 +11,22 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     checking: (state) => {
-      state.status = 'checking';
-      state.user = {};
-      state.errorMessage = undefined;
+      return Object.assign(state, initialState);
     },
     login: (state, { payload }) => {
       state.status = 'authenticated';
       state.user = payload;
       state.errorMessage = undefined;
     },
+    logout: (state, { payload }) => {
+      state.status = 'not-authenticated';
+      state.user = {};
+      state.errorMessage = payload;
+    },
+    clearErrorMessage: (state) => {
+      state.errorMessage = undefined;
+    },
   },
 });
 
-export const { checking, login } = authSlice.actions;
+export const { checking, login, logout, clearErrorMessage } = authSlice.actions;
