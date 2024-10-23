@@ -6,6 +6,14 @@ export const useAuthStore = () => {
   const { status, user, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const loginUser = ({ token, name, uid }) => {
+    localStorage.setItem('token', token);
+    // time when token was generated:
+    localStorage.setItem('token-init-time', new Date().getTime());
+
+    dispatch(login({ name, uid }));
+  };
+
   const startLogin = async ({ email, password }) => {
     dispatch(checking());
 
@@ -13,11 +21,7 @@ export const useAuthStore = () => {
       const resp = await calendarApi.post('/auth/login', { email, password });
       const data = resp.data;
 
-      localStorage.setItem('token', data.token);
-      // time when token was generated:
-      localStorage.setItem('token-init-time', new Date().getTime());
-
-      dispatch(login({ name: data.name, uid: data.uid }));
+      loginUser({ token: data.token, name: data.name, uid: data.uid });
       //
     } catch (error) {
       dispatch(logout('Incorrect credentials'));
@@ -34,11 +38,7 @@ export const useAuthStore = () => {
     try {
       const { data } = await calendarApi.post('/auth/new', { name, email, password });
 
-      localStorage.setItem('token', data.token);
-      // time when token was generated:
-      localStorage.setItem('token-init-time', new Date().getTime());
-
-      dispatch(login({ name: data.name, uid: data.uid }));
+      loginUser({ token: data.token, name: data.name, uid: data.uid });
       //
     } catch (error) {
       const { data } = error.response;
@@ -57,6 +57,31 @@ export const useAuthStore = () => {
     }
   };
 
+  const checkAuthToken = async () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) return dispatch(logout());
+
+    try {
+      const { data } = await calendarApi.get('/auth/renew');
+
+      loginUser({ token: data.token, name: data.name, uid: data.uid });
+      //
+    } catch (error) {
+      localStorage.clear();
+      dispatch(logout());
+    }
+  };
+
+  const startLogout = () => {
+    dispatch(checking());
+
+    localStorage.removeItem('token-init-time');
+    localStorage.removeItem('token');
+
+    dispatch(logout());
+  };
+
   return {
     // Properties
     status,
@@ -66,5 +91,7 @@ export const useAuthStore = () => {
     // Functions
     startLogin,
     startRegister,
+    checkAuthToken,
+    startLogout,
   };
 };
