@@ -2,23 +2,9 @@ import { useState } from 'react';
 import { Calendar } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { addHours } from 'date-fns';
-import { Navbar, CalendarEvent,CalendarModal } from '../';
+import { Navbar, CalendarEvent, CalendarModal } from '../';
 import { localizer } from '../../helpers';
-
-const events = [
-  {
-    title: 'Birthday',
-    notes: 'Buy cake',
-    start: new Date(),
-    end: addHours(new Date(), 2),
-    bgColor: 'fafafa',
-    user: {
-      _id: '123',
-      name: 'Juna',
-    },
-  },
-];
+import { useCalendarStore, useUIStore } from '../../hooks';
 
 const eventStyleGetter = (event, start, end, isSelected) => {
   const style = {
@@ -32,10 +18,12 @@ const eventStyleGetter = (event, start, end, isSelected) => {
 };
 
 export const CalendarPage = () => {
+  const { events } = useCalendarStore();
+  const { openDateModal } = useUIStore();
   const [lastview, setLastview] = useState(localStorage.getItem('lastview') || 'month');
 
   const onDoubleClick = (event) => {
-    console.log('double click', event);
+    openDateModal();
   };
 
   const onSelect = (event) => {
