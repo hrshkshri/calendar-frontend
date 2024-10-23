@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+/*
 import { addHours } from 'date-fns';
 
+Event structure example
 const tempEvent = {
   _id: new Date().getTime(),
   title: 'Birthday',
@@ -13,9 +15,11 @@ const tempEvent = {
     name: 'Juna',
   },
 };
+*/
 
 const initialState = {
-  events: [tempEvent],
+  isLoadingEvents: true,
+  events: [],
   activeEvent: null,
 };
 
@@ -46,7 +50,20 @@ export const calendarSlice = createSlice({
         state.activeEvent = null;
       }
     },
+
+    loadEvents: (state, { payload = [] }) => {
+      state.isLoadingEvents = false;
+      // state.events = [...events, payload];
+      payload.forEach((event) => {
+        const alreadyExists = state.events.some((e) => e.id === event.id);
+
+        if (!alreadyExists) {
+          state.events.push(event);
+        }
+      });
+    },
   },
 });
 
-export const { activateEvent, addNewEvent, updateEvent, onDeleteEvent } = calendarSlice.actions;
+export const { activateEvent, addNewEvent, updateEvent, onDeleteEvent, loadEvents } =
+  calendarSlice.actions;
