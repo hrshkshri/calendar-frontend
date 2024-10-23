@@ -8,11 +8,6 @@ You are the only admin of your events, being able to:
   - Title, notes (optional), start date, end date
 - [x] Update events
 - [x] Delete events
-- [ ] View other people events (now only private events from march 2023)
-
-Visit the **deployed** app at **[Calendar App](https://calendarappa.up.railway.app/auth/login)**
-
-Check the backend code and tech stack at [Calendar Back github repository](https://github.com/augusticor/calendar-back#readme)
 
 **Update**
 
@@ -42,18 +37,6 @@ Read other project dependencies and versions in the [package.json](package.json)
 
 #### Backend
 
-Check the backend code and tech stack at [Calendar Back github repository](https://github.com/augusticor/calendar-back#readme)
-
-## How to use this project
-
-There are four ways you can use this project.
- 
-If you are going to use it for development, testing or your own production, first follow these steps for any of the modes:
-
-1. Configure the backend project with this [configuration](https://github.com/augusticor/calendar-back#how-to-use-this-project), in order to consume that api from this frontend project.
-2. Clone the frontend project ```git clone git@github.com:augusticor/calendar-front.git```
-3. Continue with the mode you want
-
 ### Development
 
 4. Install the project dependencies using [npm install](#npm-install)
@@ -71,32 +54,3 @@ If you are going to use it for development, testing or your own production, firs
 4. Rename the [.env.production.template](.env.production.template) file to ***.env.production*** and set the env variable *VITE_API_URL* to your deployed backend api url, take in account it should finish with ***/api***
 6. Create optimized production site using the command [npm run build](#npm-run-build)
 7. Upload the dist folder to you preferred host
-
-### Live Deployment
-
-Just visit the **deployed** app at **[Calendar App](https://calendarappa.up.railway.app/auth/login)**
-
-## Available scripts
-
-### ```npm run dev```
-
-Runs react app in development mode, uses the ".env.development" file.
-
-### ```npm run build```
-
-Starts testing the project and diplays the tests status in the command prompt. Uses the ".env.test" file.
-
-### ```npm run preview```
-
-Runs the app in preview mode, first build it. Refer to [documentation](https://vitejs.dev/guide/cli.html#vite-preview)
-
-### ```npm run test```
-
-Starts testing the project and diplays the tests status in the command prompt. Uses the ".env.test" file.
-
-### ```npm run ghcitests```
-
-Tests the project once and does not listen for changes in *.test.js files as "npm run test" would do. Use it for continuous integration.
-
----
-More information on Vite commands: [Official CLI docs](https://vitejs.dev/guide/cli.html)
