@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { addHours, differenceInSeconds } from 'date-fns';
 import ReactModal from 'react-modal';
 import DatePicker from 'react-datepicker';
 import Swal from 'sweetalert2';
-import { useUIStore } from '../../hooks/useUIStore';
+import { useCalendarStore, useUIStore } from '../../hooks';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -23,12 +23,13 @@ ReactModal.setAppElement('#root');
 // Component:
 export const CalendarModal = () => {
   const { isDateModalOpen, closeDateModal } = useUIStore();
+  const { activeEvent } = useCalendarStore();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const [formValues, setFormValues] = useState({
-    title: 'Buy things',
-    notes: 'Just for fun',
+    title: '',
+    notes: '',
     start: new Date(),
     end: addHours(new Date(), 2),
   });
@@ -38,6 +39,12 @@ export const CalendarModal = () => {
 
     return formValues.title.length > 1 ? 'is-valid' : 'is-invalid';
   }, [formValues.title, formSubmitted]);
+
+  useEffect(() => {
+    if (activeEvent !== null) {
+      setFormValues({ ...activeEvent });
+    }
+  }, [activeEvent]);
 
   const onInputChange = ({ target }) => {
     setFormValues({

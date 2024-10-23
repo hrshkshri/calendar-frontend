@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { addHours } from 'date-fns';
 
 const tempEvent = {
+  _id: new Date().getTime(),
   title: 'Birthday',
   notes: 'Buy cake',
   start: new Date(),
@@ -22,10 +23,10 @@ export const calendarSlice = createSlice({
   name: 'calendar',
   initialState,
   reducers: {
-    createEvent: (state) => {
-      // TODO
+    activateEvent: (state, { payload }) => {
+      state.activeEvent = payload;
     },
   },
 });
 
-export const { createEvent } = calendarSlice.actions;
+export const { activateEvent } = calendarSlice.actions;
