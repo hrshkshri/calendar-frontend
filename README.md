@@ -35,7 +35,7 @@ This project was created using the **M.E.R.N.** stack that stands for MongoDB, E
 
 Read other project dependencies and versions in the [package.json](package.json) file.
 
-#### Backend
+#### [Backend](https://github.com/hrshkshri/calendar-backend/tree/main)
 
 ### Development
 
